@@ -67,9 +67,10 @@ npm run preview     # preview the production build
 ## Deploy
 
 It's a static SPA — any static host works. The repo includes a `wrangler.jsonc`
-(Cloudflare Workers static assets, with single-page-application routing) and a
-`public/_redirects` (Cloudflare Pages / Netlify). `npm run build` produces `dist/`,
-fetching fresh MITRE data at build time.
+for Cloudflare Workers static assets, with `single-page-application` not-found
+handling so deep links resolve. `npm run build` produces `dist/`, fetching fresh
+MITRE data at build time. (For Cloudflare Pages or Netlify instead, add a
+`public/_redirects` containing `/* /index.html 200`.)
 
 ## Disclaimer
 
