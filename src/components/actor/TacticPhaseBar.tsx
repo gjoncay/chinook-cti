@@ -65,7 +65,10 @@ export function TacticPhaseBar({ detail, onSelectTactic }: TacticPhaseBarProps) 
     <section className="px-4 py-6 md:px-8" style={{ borderBottom: "1px solid var(--border-default)" }}>
       <h2 className="data-label mb-4">Tactic Phase Profile</h2>
 
-      <div style={{ width: "100%", height: 240 }}>
+      {/* Scrolls horizontally when the 15 tactic labels can't fit (mobile);
+          at >= 720px wide it renders full-width exactly as before. */}
+      <div className="overflow-x-auto">
+        <div style={{ width: "100%", minWidth: 720, height: 240 }}>
         <ResponsiveContainer>
           <BarChart data={data} margin={{ top: 4, right: 0, bottom: 0, left: -24 }} barCategoryGap="12%">
             <CartesianGrid vertical={false} stroke="var(--border-subtle)" strokeDasharray="0" />
@@ -103,6 +106,7 @@ export function TacticPhaseBar({ detail, onSelectTactic }: TacticPhaseBarProps) 
             </Bar>
           </BarChart>
         </ResponsiveContainer>
+        </div>
       </div>
     </section>
   );
