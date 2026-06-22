@@ -46,8 +46,8 @@ export function HomePage() {
               Threat landscape
             </h1>
             <p className="mt-1 max-w-[560px] text-[13px]" style={{ color: "var(--text-secondary)" }}>
-              A curated view of the MITRE ATT&CK intrusion-set corpus — who's most active, which
-              techniques are most common, and how it all maps across the kill chain.
+              A curated view of the MITRE ATT&CK intrusion-set corpus. See who's most active,
+              which techniques are most common, and how it all maps across the kill chain.
             </p>
           </div>
           <div className="w-full lg:w-auto">
