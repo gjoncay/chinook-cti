@@ -69,7 +69,7 @@ export function ActorPage() {
   }, [groupId, setSelectedGroup]);
 
   useEffect(() => {
-    if (detail) document.title = `${detail.name} — Chinook CTI`;
+    if (detail) document.title = `${detail.name} — Chinook Cyber`;
     document.querySelector("main")?.scrollTo(0, 0);
   }, [detail]);
 

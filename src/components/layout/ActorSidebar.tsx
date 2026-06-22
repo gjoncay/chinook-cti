@@ -1,6 +1,7 @@
 import { forwardRef, useEffect, useMemo, useRef, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAttackStore } from "../../store/useAttackStore";
+import { useTheme } from "../../store/useTheme";
 import { SearchInput } from "../shared/SearchInput";
 import { AboutDialog } from "../shared/AboutDialog";
 import type { AttackGroupSummary } from "../../data/types";
@@ -71,6 +72,7 @@ export function ActorSidebar() {
   const groups = useAttackStore((s) => s.groups);
   const navigate = useNavigate();
   const { groupId } = useParams<{ groupId: string }>();
+  const { theme, toggle: toggleTheme } = useTheme();
 
   const [query, setQuery] = useState("");
   const [aboutOpen, setAboutOpen] = useState(false);
@@ -152,23 +154,13 @@ export function ActorSidebar() {
     >
       {/* Brand */}
       <div className="px-3 pb-3.5 pt-4" style={{ borderBottom: "1px solid var(--border-default)" }}>
-        <div className="flex items-center gap-2.5">
-          <svg width="22" height="22" viewBox="0 0 20 20" fill="none" aria-hidden className="shrink-0">
-            <path
-              d="M10 1.5 L18.5 10 L10 18.5 L1.5 10 Z"
-              fill="var(--accent-glow)"
-              stroke="var(--accent-primary)"
-              strokeWidth="1.5"
-              strokeLinejoin="round"
-            />
-            <path d="M10 6.4 L13.6 10 L10 13.6 L6.4 10 Z" fill="var(--accent-primary)" />
-          </svg>
-          <div className="text-[17px] font-bold leading-none tracking-[-0.01em]">
-            <span style={{ color: "var(--text-primary)" }}>Chinook</span>
-            <span style={{ color: "var(--accent-primary)" }}> CTI</span>
-          </div>
+        <div className="text-[17px] font-bold leading-none tracking-[-0.01em]">
+          <span style={{ color: "var(--text-primary)" }}>Chinook</span>
+          <span style={{ color: "var(--accent-primary)" }}> Cyber</span>
         </div>
-        <div className="data-label mt-2">ATT&CK Browser</div>
+        <div className="data-label mt-2" style={{ color: "var(--accent-secondary)" }}>
+          ATT&CK Browser
+        </div>
       </div>
 
       {/* Search */}
@@ -279,19 +271,22 @@ export function ActorSidebar() {
           })}
       </div>
 
-      {/* Footer: attribution + legal */}
+      {/* Footer: attribution + legal + theme toggle */}
       <div
         className="shrink-0 px-3 py-2.5"
         style={{ borderTop: "1px solid var(--border-default)" }}
       >
-        <button
-          type="button"
-          onClick={() => setAboutOpen(true)}
-          className="text-[12px] transition-colors hover:text-[var(--text-primary)]"
-          style={{ color: "var(--text-secondary)" }}
-        >
-          About &amp; legal
-        </button>
+        <div className="flex items-center justify-between">
+          <button
+            type="button"
+            onClick={() => setAboutOpen(true)}
+            className="text-[12px] transition-colors hover:text-[var(--text-primary)]"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            About &amp; legal
+          </button>
+          <ThemeToggle theme={theme} onToggle={toggleTheme} />
+        </div>
         <div className="mt-0.5 text-[10px]" style={{ color: "var(--text-muted)" }}>
           Data: MITRE ATT&CK® · D3FEND™
         </div>
@@ -325,6 +320,43 @@ function SortButton({
       }}
     >
       {children}
+    </button>
+  );
+}
+
+function ThemeToggle({ theme, onToggle }: { theme: "light" | "dark"; onToggle: () => void }) {
+  const isDark = theme === "dark";
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className="flex h-6 w-6 items-center justify-center rounded transition-colors hover:bg-[var(--bg-raised)]"
+      style={{ color: "var(--text-secondary)" }}
+      aria-label={isDark ? "Switch to light theme" : "Switch to dark theme"}
+      title={isDark ? "Switch to light theme" : "Switch to dark theme"}
+    >
+      {isDark ? (
+        // Moon
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <path
+            d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinejoin="round"
+          />
+        </svg>
+      ) : (
+        // Sun
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden>
+          <circle cx="12" cy="12" r="4" stroke="currentColor" strokeWidth="1.8" />
+          <path
+            d="M12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"
+            stroke="currentColor"
+            strokeWidth="1.8"
+            strokeLinecap="round"
+          />
+        </svg>
+      )}
     </button>
   );
 }

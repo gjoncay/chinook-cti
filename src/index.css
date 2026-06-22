@@ -3,26 +3,64 @@
 @tailwind utilities;
 
 :root {
-  /* Surfaces */
-  --bg-base: #0f1117;
-  --bg-surface: #161b27;
-  --bg-raised: #1e2538;
-  --bg-overlay: #252d3d;
+  /* === Light theme (default) — clean, professional SaaS === */
+
+  /* Surfaces — warm sand (Sonoran desert) */
+  --bg-base: #f5efe6;
+  --bg-surface: #fffdf9;
+  --bg-raised: #efe7da;
+  --bg-overlay: #fffdf9;
 
   /* Borders */
-  --border-subtle: #ffffff0f;
-  --border-default: #ffffff1a;
-  --border-strong: #ffffff30;
+  --border-subtle: #1d1f1d0a;
+  --border-default: #e4dbcd;
+  --border-strong: #d6cbb8;
 
   /* Text */
-  --text-primary: #e8eaf0;
-  --text-secondary: #8b92a5;
-  --text-muted: #565f75;
-  --text-inverse: #0f1117;
+  --text-primary: #1d1f1d;
+  --text-secondary: #55605a;
+  --text-muted: #8c9088;
+  --text-inverse: #fffdf9;
 
-  /* Accent */
-  --accent-primary: #4f8ef7;
-  --accent-glow: #4f8ef720;
+  /* Accent — pine green primary, desert tan secondary */
+  --accent-primary: #58855f;
+  --accent-secondary: #e0882f;
+  --accent-glow: #58855f1a;
+
+  /* Soft shadow for raised surfaces (light theme only; dark overrides to none) */
+  --shadow-card: 0 1px 2px rgba(29, 31, 29, 0.05), 0 1px 3px rgba(29, 31, 29, 0.08);
+}
+
+:root[data-theme="dark"] {
+  /* === Soft dark theme — lifted slate, not menacing SOC === */
+
+  /* Surfaces — charcoal (PNW forest at dusk) */
+  --bg-base: #1d1f1d;
+  --bg-surface: #2c2e2c;
+  --bg-raised: #343734;
+  --bg-overlay: #3a3d39;
+
+  /* Borders */
+  --border-subtle: #ffffff0a;
+  --border-default: #43463f;
+  --border-strong: #565a51;
+
+  /* Text */
+  --text-primary: #eef1ea;
+  --text-secondary: #9aa39a;
+  --text-muted: #6f756c;
+  --text-inverse: #1d1f1d;
+
+  /* Accent — lifted pine for contrast on dark, softer tan secondary */
+  --accent-primary: #6fa777;
+  --accent-secondary: #eaa15a;
+  --accent-glow: #6fa7771f;
+
+  --shadow-card: none;
+}
+
+:root {
+  /* === Shared across both themes === */
 
   /* Tactic phase colors (kill-chain order) */
   --tactic-recon: #94a3b8;
@@ -71,6 +109,7 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
 
   /* Tighten display headings as specified in the brief */
@@ -86,7 +125,7 @@
     text-decoration: none;
   }
 
-  /* Dense, terminal-grade scrollbars */
+  /* Subtle, unobtrusive scrollbars */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -95,8 +134,8 @@
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: var(--border-default);
-    border-radius: 0;
+    background: var(--border-strong);
+    border-radius: 8px;
     border: 3px solid var(--bg-base);
   }
   ::-webkit-scrollbar-thumb:hover {
