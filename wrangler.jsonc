@@ -1,0 +1,12 @@
+{
+  // Static-assets-only Worker (no server code). `npx wrangler deploy` uploads
+  // the Vite build output in ./dist and serves it from Cloudflare's edge.
+  "name": "chinook-cti",
+  "compatibility_date": "2025-06-01",
+  "assets": {
+    "directory": "./dist",
+    // Serve index.html for unmatched routes so client-side routes
+    // (e.g. /actor/G0016) work on reload / deep links.
+    "not_found_handling": "single-page-application"
+  }
+}
