@@ -151,13 +151,24 @@ export function ActorSidebar() {
       aria-label="Threat actors"
     >
       {/* Brand */}
-      <div className="px-3 pb-3 pt-3.5">
-        <span className="text-[13px] font-semibold tracking-[0.04em]" style={{ color: "var(--text-primary)" }}>
-          Chinook CTI
-        </span>
-        <div className="mt-0.5 text-[11px]" style={{ color: "var(--text-muted)" }}>
-          ATT&CK Intelligence Browser
+      <div className="px-3 pb-3.5 pt-4" style={{ borderBottom: "1px solid var(--border-default)" }}>
+        <div className="flex items-center gap-2.5">
+          <svg width="22" height="22" viewBox="0 0 20 20" fill="none" aria-hidden className="shrink-0">
+            <path
+              d="M10 1.5 L18.5 10 L10 18.5 L1.5 10 Z"
+              fill="var(--accent-glow)"
+              stroke="var(--accent-primary)"
+              strokeWidth="1.5"
+              strokeLinejoin="round"
+            />
+            <path d="M10 6.4 L13.6 10 L10 13.6 L6.4 10 Z" fill="var(--accent-primary)" />
+          </svg>
+          <div className="text-[17px] font-bold leading-none tracking-[-0.01em]">
+            <span style={{ color: "var(--text-primary)" }}>Chinook</span>
+            <span style={{ color: "var(--accent-primary)" }}> CTI</span>
+          </div>
         </div>
+        <div className="data-label mt-2">ATT&CK Intelligence Browser</div>
       </div>
 
       {/* Search */}
