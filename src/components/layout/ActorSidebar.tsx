@@ -152,15 +152,17 @@ export function ActorSidebar() {
       onKeyDown={onKeyDown}
       aria-label="Threat actors"
     >
-      {/* Brand */}
+      {/* Brand — links home */}
       <div className="px-3 pb-3.5 pt-4" style={{ borderBottom: "1px solid var(--border-default)" }}>
-        <div className="text-[17px] font-bold leading-none tracking-[-0.01em]">
-          <span style={{ color: "var(--text-primary)" }}>Chinook</span>
-          <span style={{ color: "var(--accent-primary)" }}> Cyber</span>
-        </div>
-        <div className="data-label mt-2" style={{ color: "var(--accent-secondary)" }}>
-          ATT&CK Browser
-        </div>
+        <Link to="/" className="inline-block" aria-label="Chinook Cyber — home">
+          <div className="text-[17px] font-bold leading-none tracking-[-0.01em]">
+            <span style={{ color: "var(--text-primary)" }}>Chinook</span>
+            <span style={{ color: "var(--accent-primary)" }}> Cyber</span>
+          </div>
+          <div className="data-label mt-2" style={{ color: "var(--accent-secondary)" }}>
+            ATT&CK Browser
+          </div>
+        </Link>
       </div>
 
       {/* Search */}

@@ -450,6 +450,121 @@ export function getCampaignsForGroup(groupId: string): AttackCampaign[] {
   return dedupeById(data.campaignsByGroup.get(group.id) ?? []);
 }
 
+/* ------------------------- graph index (home page) ------------------------- */
+
+export interface TechniqueStat {
+  attackId: string;
+  name: string;
+  url: string;
+  tacticPhases: string[];
+  actorCount: number; // distinct groups that use this top-level technique
+}
+
+let topTechniqueCache: TechniqueStat[] | null = null;
+
+function buildTopTechniques(data: ParsedData): TechniqueStat[] {
+  // Universe of top-level (non-sub) techniques.
+  const topById = new Map<string, InternalTechnique>();
+  for (const t of data.techniqueByStixId.values()) {
+    if (!t.isSubtechnique) topById.set(t.attackId, t);
+  }
+
+  // Count distinct groups that use each top-level technique (sub-uses roll up to parent).
+  const techniqueActors = new Map<string, Set<string>>();
+  for (const group of data.groups) {
+    const uses = dedupeUses(data.techniqueUsesByGroup.get(group.id) ?? []);
+    const seen = new Set<string>();
+    for (const u of uses) {
+      const topId = u.isSubtechnique ? u.parentId ?? u.techniqueId : u.techniqueId;
+      if (!topById.has(topId) || seen.has(topId)) continue;
+      seen.add(topId);
+      let actors = techniqueActors.get(topId);
+      if (!actors) {
+        actors = new Set();
+        techniqueActors.set(topId, actors);
+      }
+      actors.add(group.attackId);
+    }
+  }
+
+  return [...topById.values()].map((t) => ({
+    attackId: t.attackId,
+    name: t.name,
+    url: t.url,
+    tacticPhases: t.tacticPhases,
+    actorCount: techniqueActors.get(t.attackId)?.size ?? 0,
+  }));
+}
+
+/** Top-level ATT&CK techniques enriched with how many groups use each. */
+export function getTopLevelTechniques(): TechniqueStat[] {
+  if (!topTechniqueCache) topTechniqueCache = buildTopTechniques(requireCache());
+  return topTechniqueCache;
+}
+
+export interface SoftwareStat {
+  attackId: string;
+  name: string;
+  url: string;
+  softwareType: "malware" | "tool";
+  actorCount: number; // distinct groups documented using this software
+}
+
+let softwareUsageCache: SoftwareStat[] | null = null;
+
+/** Malware/tools ranked by how many tracked groups use each. */
+export function getSoftwareUsage(): SoftwareStat[] {
+  if (softwareUsageCache) return softwareUsageCache;
+  const data = requireCache();
+  const byId = new Map<string, { sw: AttackSoftware; actors: Set<string> }>();
+  for (const group of data.groups) {
+    for (const sw of dedupeById(data.softwareByGroup.get(group.id) ?? [])) {
+      let entry = byId.get(sw.id);
+      if (!entry) {
+        entry = { sw, actors: new Set() };
+        byId.set(sw.id, entry);
+      }
+      entry.actors.add(group.attackId);
+    }
+  }
+  softwareUsageCache = [...byId.values()]
+    .map(({ sw, actors }) => ({
+      attackId: sw.attackId,
+      name: sw.name,
+      url: sw.url,
+      softwareType: sw.softwareType,
+      actorCount: actors.size,
+    }))
+    .sort((a, b) => b.actorCount - a.actorCount || a.name.localeCompare(b.name));
+  return softwareUsageCache;
+}
+
+export interface PlatformStat {
+  name: string;
+  techniqueCount: number; // top-level techniques that target this platform
+}
+
+let platformUsageCache: PlatformStat[] | null = null;
+
+/**
+ * Target platforms ranked by how many top-level techniques apply to each.
+ * (Counting actors saturates — most techniques are tagged for many platforms —
+ * so the technique surface is the more differentiating signal.)
+ */
+export function getPlatformUsage(): PlatformStat[] {
+  if (platformUsageCache) return platformUsageCache;
+  const data = requireCache();
+  const byPlatform = new Map<string, number>();
+  for (const t of data.techniqueByStixId.values()) {
+    if (t.isSubtechnique) continue;
+    for (const p of t.platforms) byPlatform.set(p, (byPlatform.get(p) ?? 0) + 1);
+  }
+  platformUsageCache = [...byPlatform.entries()]
+    .map(([name, techniqueCount]) => ({ name, techniqueCount }))
+    .sort((a, b) => b.techniqueCount - a.techniqueCount || a.name.localeCompare(b.name));
+  return platformUsageCache;
+}
+
 /* ------------------------------- sort utils ------------------------------- */
 
 function dedupeById<T extends { id: string }>(items: T[]): T[] {

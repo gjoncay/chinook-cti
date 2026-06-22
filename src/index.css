@@ -69,7 +69,8 @@
   --tactic-exec: #ef4444;
   --tactic-persist: #a855f7;
   --tactic-privesc: #ec4899;
-  --tactic-defense: #14b8a6;
+  --tactic-defense: #14b8a6; /* Stealth (formerly Defense Evasion) */
+  --tactic-defense-impair: #fb7185; /* Defense Impairment */
   --tactic-cred: #f59e0b;
   --tactic-discovery: #eab308; /* not in brief; added for the 14th tactic */
   --tactic-lateral: #3b82f6;
