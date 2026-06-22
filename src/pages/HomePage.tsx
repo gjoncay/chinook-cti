@@ -39,9 +39,9 @@ export function HomePage() {
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="max-w-[1600px] px-8 py-6">
+      <div className="max-w-[1600px] px-4 py-6 md:px-8">
         <header className="mb-5 flex flex-wrap items-end justify-between gap-4">
-          <div>
+          <div className="min-w-0">
             <h1 className="text-[22px] font-semibold" style={{ color: "var(--text-primary)" }}>
               Threat landscape
             </h1>
@@ -50,7 +50,9 @@ export function HomePage() {
               techniques are most common, and how it all maps across the kill chain.
             </p>
           </div>
-          <QuickSearch />
+          <div className="w-full lg:w-auto">
+            <QuickSearch />
+          </div>
         </header>
 
         {status === "error" ? (
@@ -61,7 +63,7 @@ export function HomePage() {
           <div className="space-y-4">
             <StatCards stats={dash.stats} />
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
               <Panel title="Most active threat actors" subtitle="By distinct techniques observed">
                 <RankedBars items={dash.actors} accent="var(--accent-primary)" />
               </Panel>
@@ -70,7 +72,7 @@ export function HomePage() {
               </Panel>
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
               <Panel title="Most-used software & tools" subtitle="By number of tracked actors using them">
                 <RankedBars items={dash.software} accent="var(--accent-primary)" />
               </Panel>
@@ -100,7 +102,7 @@ function StatCards({ stats }: { stats: DatasetStats }) {
     { label: "Associated states", value: stats.states },
   ];
   return (
-    <div className="grid grid-cols-4 gap-3">
+    <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
       {cards.map((c) => (
         <div
           key={c.label}

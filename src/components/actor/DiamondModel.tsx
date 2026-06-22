@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { AttackGroupDetail } from "../../data/types";
 
 interface DiamondModelProps {
@@ -120,6 +120,23 @@ export function DiamondModel({
 }: DiamondModelProps) {
   const [showPlatforms, setShowPlatforms] = useState(false);
 
+  // Scale the fixed-size diamond stage down to fit narrow viewports. Desktop
+  // (>= W px available) renders at native scale 1, identical to before.
+  const stageWrapRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  useEffect(() => {
+    const el = stageWrapRef.current;
+    if (!el) return;
+    const update = () => {
+      const available = el.clientWidth;
+      setScale(available >= W ? 1 : Math.max(available / W, 0.1));
+    };
+    update();
+    const ro = new ResizeObserver(update);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
   const techCount = detail.techniqueUses.length;
   const swCount = detail.software.length;
   const toolCount = detail.software.filter((s) => s.softwareType === "tool").length;
@@ -145,13 +162,20 @@ export function DiamondModel({
   const diamond = `${top.x},${top.y} ${right.x},${right.y} ${bottom.x},${bottom.y} ${left.x},${left.y}`;
 
   return (
-    <section className="px-8 py-6" style={{ borderBottom: "1px solid var(--border-default)" }}>
+    <section className="px-4 py-6 md:px-8" style={{ borderBottom: "1px solid var(--border-default)" }}>
       <h2 className="data-label mb-1">Diamond Model</h2>
       <p className="mb-4 text-[12px]" style={{ color: "var(--text-muted)" }}>
         Intrusion analysis across the four core features. Select a vertex to drill in.
       </p>
 
-      <div className="relative mx-auto" style={{ width: W, maxWidth: "100%", height: H }}>
+      {/* Measuring wrapper (full width) holds a centered box sized to the SCALED
+          stage, so the diamond never overflows its container on narrow screens. */}
+      <div ref={stageWrapRef}>
+      <div className="mx-auto" style={{ width: W * scale, height: H * scale }}>
+      <div
+        className="relative"
+        style={{ width: W, height: H, transform: `scale(${scale})`, transformOrigin: "top left" }}
+      >
         <svg
           className="absolute inset-0 h-full w-full"
           viewBox={`0 0 ${W} ${H}`}
@@ -216,6 +240,8 @@ export function DiamondModel({
           onClick={onFocusInfrastructure}
         />
       </div>
+      </div>
+      </div>
 
       {showPlatforms && platformNames.length > 0 && (
         <div className="mt-4" style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: 16 }}>
@@ -240,7 +266,7 @@ export function DiamondModel({
 
       <div className="mt-5 flex flex-wrap gap-x-10 gap-y-3" style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: 16 }}>
         <MetaItem label="Activity window" value={activityWindow(detail)} />
-        <MetaItem label="Active phases" value={`${activePhases} / 14`} />
+        <MetaItem label="Active phases" value={`${activePhases} / ${detail.tacticProfile.length}`} />
         <MetaItem label="Campaigns" value={String(detail.campaigns.length)} />
         <MetaItem label="Last updated" value={detail.modified ? detail.modified.slice(0, 10) : "—"} />
       </div>

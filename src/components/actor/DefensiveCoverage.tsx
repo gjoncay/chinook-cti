@@ -111,8 +111,8 @@ export function DefensiveCoverage({ techniques }: DefensiveCoverageProps) {
   }, [coverage]);
 
   return (
-    <section className="px-8 py-6" style={{ borderBottom: "1px solid var(--border-default)" }}>
-      <div className="mb-1 flex items-baseline justify-between">
+    <section className="px-4 py-6 md:px-8" style={{ borderBottom: "1px solid var(--border-default)" }}>
+      <div className="mb-1 flex items-baseline justify-between gap-3">
         <h2 className="data-label">Defensive Coverage · D3FEND</h2>
         {coverage && (
           <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>

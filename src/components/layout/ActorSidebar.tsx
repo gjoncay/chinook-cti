@@ -68,7 +68,12 @@ function buildSections(groups: AttackGroupSummary[], mode: SortMode): Section[] 
   }));
 }
 
-export function ActorSidebar() {
+interface ActorSidebarProps {
+  /** Called whenever a navigation action occurs — lets the mobile drawer close itself. */
+  onNavigate?: () => void;
+}
+
+export function ActorSidebar({ onNavigate }: ActorSidebarProps = {}) {
   const status = useAttackStore((s) => s.status);
   const groups = useAttackStore((s) => s.groups);
   const navigate = useNavigate();
@@ -140,7 +145,10 @@ export function ActorSidebar() {
       });
     } else if (e.key === "Enter") {
       const target = visibleRows[activeIndex];
-      if (target) navigate(`/actor/${target.attackId}`);
+      if (target) {
+        navigate(`/actor/${target.attackId}`);
+        onNavigate?.();
+      }
     }
   }
 
@@ -155,7 +163,7 @@ export function ActorSidebar() {
     >
       {/* Brand — links home */}
       <div className="px-3 pb-3.5 pt-4" style={{ borderBottom: "1px solid var(--border-default)" }}>
-        <Link to="/" className="flex items-center gap-2.5" aria-label="Chinook Cyber — home">
+        <Link to="/" onClick={onNavigate} className="flex items-center gap-2.5" aria-label="Chinook Cyber — home">
           <img src={logoUrl} alt="" className="h-9 w-auto shrink-0" />
           <div>
             <div className="text-[17px] font-bold leading-none tracking-[-0.01em]">
@@ -269,6 +277,7 @@ export function ActorSidebar() {
                         showSponsor={sortMode === "name"}
                         selected={g.attackId === groupId}
                         active={idx === activeIndex}
+                        onSelect={onNavigate}
                       />
                     );
                   })}
@@ -372,14 +381,16 @@ interface ActorRowProps {
   selected: boolean;
   active: boolean;
   showSponsor: boolean;
+  onSelect?: () => void;
 }
 
 const ActorRow = forwardRef<HTMLAnchorElement, ActorRowProps>(
-  ({ group, selected, active, showSponsor }, ref) => {
+  ({ group, selected, active, showSponsor, onSelect }, ref) => {
     return (
       <Link
         ref={ref}
         to={`/actor/${group.attackId}`}
+        onClick={onSelect}
         className="block px-3 py-1.5 transition-colors"
         style={{
           backgroundColor: selected || active ? "var(--bg-raised)" : "transparent",

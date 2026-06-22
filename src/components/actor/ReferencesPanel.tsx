@@ -7,7 +7,7 @@ interface ReferencesPanelProps {
 
 export function ReferencesPanel({ references }: ReferencesPanelProps) {
   return (
-    <section className="px-8 py-6">
+    <section className="px-4 py-6 md:px-8">
       <div className="mb-4 flex items-baseline gap-2">
         <h2 className="data-label">Sources</h2>
         <span className="text-[11px] tabular-nums" style={{ color: "var(--text-muted)" }}>

@@ -64,7 +64,7 @@ export function TechniqueTable({ uses, activeTactic, onTacticChange }: Technique
 
   if (groups.length === 0) {
     return (
-      <section className="px-8 py-6" style={{ borderBottom: "1px solid var(--border-default)" }}>
+      <section className="px-4 py-6 md:px-8" style={{ borderBottom: "1px solid var(--border-default)" }}>
         <h2 className="data-label mb-4">Capability · Techniques</h2>
         <p className="text-[13px]" style={{ color: "var(--text-muted)" }}>
           No techniques are attributed to this actor in the ATT&CK dataset.
@@ -79,7 +79,7 @@ export function TechniqueTable({ uses, activeTactic, onTacticChange }: Technique
   const activeGroup = groups.find((g) => g.tacticId === active) ?? groups[0];
 
   return (
-    <section className="px-8 py-6" style={{ borderBottom: "1px solid var(--border-default)" }}>
+    <section className="px-4 py-6 md:px-8" style={{ borderBottom: "1px solid var(--border-default)" }}>
       <div className="mb-3 flex items-baseline justify-between">
         <h2 className="data-label">Capability · Techniques</h2>
         <span className="text-[11px]" style={{ color: "var(--text-muted)" }}>

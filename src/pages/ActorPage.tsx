@@ -14,7 +14,7 @@ import { ReferencesPanel } from "../components/actor/ReferencesPanel";
 
 function ActorSkeleton() {
   return (
-    <div className="px-8 py-7">
+    <div className="px-4 py-7 md:px-8">
       <p className="text-[13px]" style={{ color: "var(--text-muted)" }}>
         Loading ATT&CK dataset…
       </p>
@@ -94,7 +94,7 @@ export function ActorPage() {
 
   if (status === "error") {
     return (
-      <div className="px-8 py-7">
+      <div className="px-4 py-7 md:px-8">
         <p className="text-[13px]" style={{ color: "var(--text-muted)" }}>
           The ATT&CK dataset failed to load. Reload the page to retry.
         </p>
@@ -104,7 +104,7 @@ export function ActorPage() {
 
   if (!detail) {
     return (
-      <div className="px-8 py-7">
+      <div className="px-4 py-7 md:px-8">
         <div className="mono text-[12px]" style={{ color: "var(--text-muted)" }}>
           {groupId}
         </div>
@@ -136,11 +136,11 @@ export function ActorPage() {
 
       <DefensiveCoverage techniques={coverageTechniques} />
 
-      <section className="grid grid-cols-[3fr_2fr]">
-        <div className="px-8 py-6" style={{ borderRight: "1px solid var(--border-default)" }}>
+      <section className="grid grid-cols-1 lg:grid-cols-[3fr_2fr]">
+        <div className="border-b px-4 py-6 md:px-8 lg:border-b-0 lg:border-r" style={{ borderColor: "var(--border-default)" }}>
           <SoftwarePanel software={detail.software} />
         </div>
-        <div className="px-8 py-6">
+        <div className="px-4 py-6 md:px-8">
           <CampaignPanel campaigns={detail.campaigns} />
         </div>
       </section>

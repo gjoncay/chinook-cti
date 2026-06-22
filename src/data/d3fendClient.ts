@@ -2,10 +2,14 @@ import { D3FEND_TACTICS } from "./d3fendMeta";
 import { d3fendIdFor } from "./d3fendIds";
 
 /**
- * MITRE D3FEND ATT&CK→countermeasure mapping. The full-mappings CSV is served
- * with permissive CORS, so the browser fetches it directly. It's ~11.7 MB, so we
- * load it lazily (first time an actor detail page mounts) and cache module-level.
+ * MITRE D3FEND ATT&CK→countermeasure mapping. Build-time preprocessing
+ * (scripts/build-data.mjs) precomputes the off_tech_id -> countermeasures[] map
+ * and emits it as a small JSON asset, which we load lazily (first time an actor
+ * detail page mounts) and cache module-level. If that local asset is missing
+ * (e.g. `npm run dev` without a prior `build:data`), we fall back to fetching
+ * and parsing the full ~11.7 MB remote CSV directly.
  */
+const LOCAL_URL = `${import.meta.env.BASE_URL}data/d3fend.json`;
 const CSV_URL = "https://d3fend.mitre.org/api/ontology/inference/d3fend-full-mappings.csv";
 
 export interface Countermeasure {
@@ -129,14 +133,37 @@ function build(rows: string[][]): ParsedD3fend {
   return { byTechnique: out };
 }
 
+/** Shape of the precomputed asset emitted by scripts/build-data.mjs. */
+interface PrecomputedD3fend {
+  byTechnique: Record<string, Countermeasure[]>;
+}
+
+/** Load the precomputed local map; fall back to parsing the remote CSV. */
+async function fetchD3fend(): Promise<ParsedD3fend> {
+  try {
+    const res = await fetch(LOCAL_URL);
+    if (res.ok) {
+      const data = (await res.json()) as PrecomputedD3fend;
+      const byTechnique = new Map<string, Countermeasure[]>(Object.entries(data.byTechnique ?? {}));
+      return { byTechnique };
+    }
+    console.error(
+      `[d3fendClient] local D3FEND asset unavailable (${res.status}); falling back to remote CSV`,
+    );
+  } catch (err) {
+    console.error("[d3fendClient] local D3FEND asset fetch failed; falling back to remote", err);
+  }
+  const res = await fetch(CSV_URL);
+  if (!res.ok) throw new Error(`D3FEND fetch failed: ${res.status} ${res.statusText}`);
+  const text = await res.text();
+  return build(parseCsv(text));
+}
+
 export async function loadD3fend(): Promise<void> {
   if (cache) return;
   if (!loadPromise) {
     loadPromise = (async () => {
-      const res = await fetch(CSV_URL);
-      if (!res.ok) throw new Error(`D3FEND fetch failed: ${res.status} ${res.statusText}`);
-      const text = await res.text();
-      const parsed = build(parseCsv(text));
+      const parsed = await fetchD3fend();
       cache = parsed;
       return parsed;
     })().catch((err) => {

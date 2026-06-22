@@ -62,7 +62,7 @@ export function TacticPhaseBar({ detail, onSelectTactic }: TacticPhaseBarProps) 
   }));
 
   return (
-    <section className="px-8 py-6" style={{ borderBottom: "1px solid var(--border-default)" }}>
+    <section className="px-4 py-6 md:px-8" style={{ borderBottom: "1px solid var(--border-default)" }}>
       <h2 className="data-label mb-4">Tactic Phase Profile</h2>
 
       <div style={{ width: "100%", height: 240 }}>

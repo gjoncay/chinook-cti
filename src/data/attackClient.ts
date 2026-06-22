@@ -13,6 +13,10 @@ import type {
   TechniqueUse,
 } from "./types";
 
+// Build-time preprocessing (scripts/build-data.mjs) emits a trimmed bundle here.
+// We fall back to the full remote STIX bundle if the local asset is missing
+// (e.g. `npm run dev` without first running `npm run build:data`).
+const LOCAL_URL = `${import.meta.env.BASE_URL}data/attack.json`;
 const STIX_URL =
   "https://raw.githubusercontent.com/mitre/cti/master/enterprise-attack/enterprise-attack.json";
 
@@ -353,15 +357,31 @@ function buildTacticProfile(uses: TechniqueUse[]): TacticCount[] {
 
 /* ------------------------------- Loading ------------------------------- */
 
+/**
+ * Prefer the trimmed local asset; fall back to the full remote STIX bundle if
+ * it's absent (dev without a prior `build:data`, or a stale deploy). Both feed
+ * the same parseBundle() unchanged.
+ */
+async function fetchBundle(): Promise<StixBundle> {
+  try {
+    const res = await fetch(LOCAL_URL);
+    if (res.ok) return (await res.json()) as StixBundle;
+    console.error(
+      `[attackClient] local ATT&CK asset unavailable (${res.status}); falling back to remote STIX`,
+    );
+  } catch (err) {
+    console.error("[attackClient] local ATT&CK asset fetch failed; falling back to remote", err);
+  }
+  const res = await fetch(STIX_URL);
+  if (!res.ok) throw new Error(`STIX fetch failed: ${res.status} ${res.statusText}`);
+  return (await res.json()) as StixBundle;
+}
+
 export async function loadAttackData(): Promise<void> {
   if (cache) return;
   if (!loadPromise) {
     loadPromise = (async () => {
-      const res = await fetch(STIX_URL);
-      if (!res.ok) {
-        throw new Error(`STIX fetch failed: ${res.status} ${res.statusText}`);
-      }
-      const bundle = (await res.json()) as StixBundle;
+      const bundle = await fetchBundle();
       const parsed = parseBundle(bundle);
       cache = parsed;
       return parsed;

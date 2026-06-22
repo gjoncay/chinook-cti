@@ -26,10 +26,10 @@ export function ActorHeader({ detail }: ActorHeaderProps) {
 
   return (
     <header
-      className="px-8 pb-6 pt-7"
+      className="px-4 pb-6 pt-7 md:px-8"
       style={{ borderBottom: "1px solid var(--border-default)" }}
     >
-      <div className="flex items-start justify-between gap-6">
+      <div className="flex flex-col items-start gap-3 sm:flex-row sm:justify-between sm:gap-6">
         <div className="min-w-0">
           <div className="flex items-center gap-2.5">
             <span className="mono text-[12px]" style={{ color: "var(--text-muted)" }}>
