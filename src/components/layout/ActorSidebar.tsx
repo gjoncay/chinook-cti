@@ -5,6 +5,7 @@ import { useTheme } from "../../store/useTheme";
 import { SearchInput } from "../shared/SearchInput";
 import { AboutDialog } from "../shared/AboutDialog";
 import type { AttackGroupSummary } from "../../data/types";
+import logoUrl from "../../assets/chinook-logo.png";
 
 type SortMode = "name" | "nation";
 
@@ -154,13 +155,16 @@ export function ActorSidebar() {
     >
       {/* Brand — links home */}
       <div className="px-3 pb-3.5 pt-4" style={{ borderBottom: "1px solid var(--border-default)" }}>
-        <Link to="/" className="inline-block" aria-label="Chinook Cyber — home">
-          <div className="text-[17px] font-bold leading-none tracking-[-0.01em]">
-            <span style={{ color: "var(--text-primary)" }}>Chinook</span>
-            <span style={{ color: "var(--accent-primary)" }}> Cyber</span>
-          </div>
-          <div className="data-label mt-2" style={{ color: "var(--accent-secondary)" }}>
-            ATT&CK Browser
+        <Link to="/" className="flex items-center gap-2.5" aria-label="Chinook Cyber — home">
+          <img src={logoUrl} alt="" className="h-9 w-auto shrink-0" />
+          <div>
+            <div className="text-[17px] font-bold leading-none tracking-[-0.01em]">
+              <span style={{ color: "var(--text-primary)" }}>Chinook</span>
+              <span style={{ color: "var(--accent-primary)" }}> Cyber</span>
+            </div>
+            <div className="data-label mt-1.5" style={{ color: "var(--accent-secondary)" }}>
+              ATT&CK Browser
+            </div>
           </div>
         </Link>
       </div>

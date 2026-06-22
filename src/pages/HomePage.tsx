@@ -39,7 +39,7 @@ export function HomePage() {
 
   return (
     <div className="h-full overflow-y-auto">
-      <div className="mx-auto max-w-[1120px] px-6 py-6">
+      <div className="max-w-[1600px] px-8 py-6">
         <header className="mb-5 flex flex-wrap items-end justify-between gap-4">
           <div>
             <h1 className="text-[22px] font-semibold" style={{ color: "var(--text-primary)" }}>
