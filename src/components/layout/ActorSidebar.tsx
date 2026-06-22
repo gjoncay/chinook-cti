@@ -152,8 +152,8 @@ export function ActorSidebar() {
     >
       {/* Brand */}
       <div className="px-3 pb-3 pt-3.5">
-        <span className="text-[13px] font-semibold tracking-[0.14em]" style={{ color: "var(--text-primary)" }}>
-          VANTAGE
+        <span className="text-[13px] font-semibold tracking-[0.04em]" style={{ color: "var(--text-primary)" }}>
+          Chinook CTI
         </span>
         <div className="mt-0.5 text-[11px]" style={{ color: "var(--text-muted)" }}>
           ATT&CK Intelligence Browser

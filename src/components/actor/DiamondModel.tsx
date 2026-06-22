@@ -1,3 +1,4 @@
+import { useState } from "react";
 import type { AttackGroupDetail } from "../../data/types";
 
 interface DiamondModelProps {
@@ -44,9 +45,11 @@ interface VertexProps {
   primary: string;
   secondary: string;
   onClick?: () => void;
+  /** When defined, the vertex toggles inline detail and shows a rotating caret. */
+  expanded?: boolean;
 }
 
-function Vertex({ label, edge, primary, secondary, onClick }: VertexProps) {
+function Vertex({ label, edge, primary, secondary, onClick, expanded }: VertexProps) {
   const pos = EDGE_POS[edge];
   const interactive = Boolean(onClick);
   return (
@@ -61,7 +64,7 @@ function Vertex({ label, edge, primary, secondary, onClick }: VertexProps) {
         left: pos.left,
         transform: "translate(-50%, -50%)",
         backgroundColor: "var(--bg-raised)",
-        border: "1px solid var(--border-default)",
+        border: `1px solid ${expanded ? "var(--accent-primary)" : "var(--border-default)"}`,
         borderRadius: 4,
         cursor: interactive ? "pointer" : "default",
       }}
@@ -69,10 +72,25 @@ function Vertex({ label, edge, primary, secondary, onClick }: VertexProps) {
         if (interactive) e.currentTarget.style.borderColor = "var(--accent-primary)";
       }}
       onMouseLeave={(e) => {
-        if (interactive) e.currentTarget.style.borderColor = "var(--border-default)";
+        if (interactive && !expanded) e.currentTarget.style.borderColor = "var(--border-default)";
       }}
     >
-      <div className="data-label">{label}</div>
+      <div className="data-label flex items-center justify-between">
+        <span>{label}</span>
+        {expanded !== undefined && (
+          <svg
+            width="11"
+            height="11"
+            viewBox="0 0 12 12"
+            fill="none"
+            className="transition-transform"
+            style={{ transform: expanded ? "rotate(90deg)" : "rotate(0deg)" }}
+            aria-hidden
+          >
+            <path d="M4 2.5L7.5 6L4 9.5" stroke="var(--text-muted)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        )}
+      </div>
       <div className="mt-1 text-[15px] font-semibold leading-tight" style={{ color: "var(--text-primary)" }}>
         {primary}
       </div>
@@ -100,6 +118,8 @@ export function DiamondModel({
   onFocusInfrastructure,
   onFocusSources,
 }: DiamondModelProps) {
+  const [showPlatforms, setShowPlatforms] = useState(false);
+
   const techCount = detail.techniqueUses.length;
   const swCount = detail.software.length;
   const toolCount = detail.software.filter((s) => s.softwareType === "tool").length;
@@ -185,6 +205,8 @@ export function DiamondModel({
               : `${platformNames.length} targeted ${platformNames.length === 1 ? "platform" : "platforms"}`
           }
           secondary={platformLabel}
+          onClick={platformNames.length > 0 ? () => setShowPlatforms((v) => !v) : undefined}
+          expanded={platformNames.length > 0 ? showPlatforms : undefined}
         />
         <Vertex
           edge="west"
@@ -194,6 +216,27 @@ export function DiamondModel({
           onClick={onFocusInfrastructure}
         />
       </div>
+
+      {showPlatforms && platformNames.length > 0 && (
+        <div className="mt-4" style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: 16 }}>
+          <div className="data-label mb-2">Targeted platforms · victim systems</div>
+          <div className="flex flex-wrap gap-1.5">
+            {detail.platforms.map((p) => (
+              <span
+                key={p.name}
+                className="flex items-center gap-1.5 px-2 py-0.5 text-[12px]"
+                style={{ border: "1px solid var(--border-default)", borderRadius: 4, color: "var(--text-secondary)" }}
+                title={`${p.count} ${p.count === 1 ? "technique targets" : "techniques target"} ${p.name}`}
+              >
+                {p.name}
+                <span className="mono text-[11px] tabular-nums" style={{ color: "var(--text-muted)" }}>
+                  {p.count}
+                </span>
+              </span>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="mt-5 flex flex-wrap gap-x-10 gap-y-3" style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: 16 }}>
         <MetaItem label="Activity window" value={activityWindow(detail)} />

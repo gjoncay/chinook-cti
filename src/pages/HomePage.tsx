@@ -6,14 +6,14 @@ export function HomePage() {
   const groups = useAttackStore((s) => s.groups);
 
   useEffect(() => {
-    document.title = "VANTAGE — ATT&CK Intelligence Browser";
+    document.title = "Chinook CTI — ATT&CK Intelligence Browser";
   }, []);
 
   return (
     <div className="flex h-full items-center justify-center px-8">
       <div className="max-w-[440px]">
         <div className="mono text-[12px]" style={{ color: "var(--text-muted)" }}>
-          VANTAGE
+          Chinook CTI
         </div>
         <h1
           className="mt-2 text-[22px] font-semibold"

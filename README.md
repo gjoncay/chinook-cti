@@ -1,11 +1,11 @@
-# VANTAGE — ATT&CK Intelligence Browser
+# Chinook CTI — ATT&CK Intelligence Browser
 
 A threat-actor intelligence browser built around the **Diamond Model of Intrusion
 Analysis**, sourced live from MITRE ATT&CK® and enriched with MITRE D3FEND™
 defensive coverage. It reframes ATT&CK group data as adversary analysis — not a
 flat directory — so you can see *how* an actor operates and *what counters it*.
 
-![VANTAGE — APT29 detail](docs/screenshot.png)
+![Chinook CTI — APT29 detail](docs/screenshot.png)
 
 ## Features
 
@@ -47,7 +47,7 @@ npm run preview  # preview the production build
 
 ## Disclaimer
 
-VANTAGE is an independent, non-commercial project for education and research. It
+Chinook CTI is an independent, non-commercial project for education and research. It
 is **not affiliated with, endorsed by, or sponsored by The MITRE Corporation.**
 All data is © The MITRE Corporation, reproduced under the
 [ATT&CK Terms of Use](https://attack.mitre.org/resources/legal-and-branding/terms-of-use/)
