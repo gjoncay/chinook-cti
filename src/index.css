@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Surfaces */
+  --bg-base: #0f1117;
+  --bg-surface: #161b27;
+  --bg-raised: #1e2538;
+  --bg-overlay: #252d3d;
+
+  /* Borders */
+  --border-subtle: #ffffff0f;
+  --border-default: #ffffff1a;
+  --border-strong: #ffffff30;
+
+  /* Text */
+  --text-primary: #e8eaf0;
+  --text-secondary: #8b92a5;
+  --text-muted: #565f75;
+  --text-inverse: #0f1117;
+
+  /* Accent */
+  --accent-primary: #4f8ef7;
+  --accent-glow: #4f8ef720;
+
+  /* Tactic phase colors (kill-chain order) */
+  --tactic-recon: #94a3b8;
+  --tactic-resource: #94a3b8;
+  --tactic-initial: #f97316;
+  --tactic-exec: #ef4444;
+  --tactic-persist: #a855f7;
+  --tactic-privesc: #ec4899;
+  --tactic-defense: #14b8a6;
+  --tactic-cred: #f59e0b;
+  --tactic-discovery: #eab308; /* not in brief; added for the 14th tactic */
+  --tactic-lateral: #3b82f6;
+  --tactic-collect: #6366f1;
+  --tactic-c2: #06b6d4;
+  --tactic-exfil: #84cc16;
+  --tactic-impact: #ff4444;
+
+  /* D3FEND defensive tactic colors (defensive palette) */
+  --d3f-model: #64748b;
+  --d3f-harden: #14b8a6;
+  --d3f-detect: #4f8ef7;
+  --d3f-isolate: #8b5cf6;
+  --d3f-deceive: #f59e0b;
+  --d3f-evict: #f43f5e;
+  --d3f-restore: #22c55e;
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg-base);
+    color: var(--text-primary);
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+
+  /* Tighten display headings as specified in the brief */
+  h1,
+  h2,
+  h3 {
+    margin: 0;
+    letter-spacing: -0.02em;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Dense, terminal-grade scrollbars */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-default);
+    border-radius: 0;
+    border: 3px solid var(--bg-base);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--border-strong);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--accent-primary);
+    outline-offset: 1px;
+  }
+}
+
+@layer utilities {
+  /* Data label: Inter 500, 11px, uppercase, 0.08em tracking, muted */
+  .data-label {
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+  }
+
+  .mono {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-variant-ligatures: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
