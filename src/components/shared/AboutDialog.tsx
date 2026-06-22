@@ -88,9 +88,9 @@ export function AboutDialog({ open, onClose }: AboutDialogProps) {
         <div className="space-y-5 px-6 py-5">
           <Section title="Independent project">
             <p>
-              Chinook CTI is an independent, non-commercial project built for education and research. It is
-              not affiliated with, endorsed by, or sponsored by The MITRE Corporation, and its author
-              derives no revenue from it.
+              Chinook CTI is an independent, non-commercial project created by Grant Oncay for education
+              and research. It is not affiliated with, endorsed by, or sponsored by The MITRE
+              Corporation, and its author derives no revenue from it.
             </p>
           </Section>
 
@@ -132,6 +132,10 @@ export function AboutDialog({ open, onClose }: AboutDialogProps) {
             <Ext href="https://d3fend.mitre.org/">d3fend.mitre.org ↗</Ext>
             <Ext href="https://www.mitre.org/">mitre.org ↗</Ext>
           </div>
+
+          <p className="text-[12px]" style={{ color: "var(--text-muted)", paddingTop: 4 }}>
+            Created by Grant Oncay · independent, non-commercial project.
+          </p>
         </div>
       </div>
     </div>

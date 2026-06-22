@@ -168,7 +168,7 @@ export function ActorSidebar() {
             <span style={{ color: "var(--accent-primary)" }}> CTI</span>
           </div>
         </div>
-        <div className="data-label mt-2">ATT&CK Intelligence Browser</div>
+        <div className="data-label mt-2">ATT&CK Browser</div>
       </div>
 
       {/* Search */}
@@ -184,32 +184,34 @@ export function ActorSidebar() {
         />
       </div>
 
-      {/* Sort toggle + expand/collapse all */}
+      {/* Grouping mode */}
       <div className="flex items-center gap-1 px-3 pb-2">
         <SortButton active={sortMode === "name"} onClick={() => setSortMode("name")}>
           A–Z
         </SortButton>
         <SortButton active={sortMode === "nation"} onClick={() => setSortMode("nation")}>
-          By nation
+          Associated State
         </SortButton>
-        {status === "ready" && sectionLabels.length > 0 && (
-          <button
-            type="button"
-            onClick={toggleAll}
-            className="ml-auto px-1 text-[11px] transition-colors hover:text-[var(--text-primary)]"
-            style={{ color: "var(--text-muted)" }}
-          >
-            {allCollapsed ? "Expand all" : "Collapse all"}
-          </button>
-        )}
       </div>
 
-      {/* Count line */}
+      {/* Count line + expand/collapse all */}
       <div className="flex items-center justify-between px-3 pb-1.5">
         <span className="data-label">Actors</span>
-        <span className="text-[11px] tabular-nums" style={{ color: "var(--text-muted)" }}>
-          {status === "ready" ? filtered.length : ""}
-        </span>
+        <div className="flex items-center gap-2.5">
+          {status === "ready" && sectionLabels.length > 0 && (
+            <button
+              type="button"
+              onClick={toggleAll}
+              className="text-[11px] transition-colors hover:text-[var(--text-primary)]"
+              style={{ color: "var(--text-muted)" }}
+            >
+              {allCollapsed ? "Expand all" : "Collapse all"}
+            </button>
+          )}
+          <span className="text-[11px] tabular-nums" style={{ color: "var(--text-muted)" }}>
+            {status === "ready" ? filtered.length : ""}
+          </span>
+        </div>
       </div>
 
       {/* List */}

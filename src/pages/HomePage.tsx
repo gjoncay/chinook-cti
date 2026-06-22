@@ -6,7 +6,7 @@ export function HomePage() {
   const groups = useAttackStore((s) => s.groups);
 
   useEffect(() => {
-    document.title = "Chinook CTI — ATT&CK Intelligence Browser";
+    document.title = "Chinook CTI — ATT&CK Browser";
   }, []);
 
   return (

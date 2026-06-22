@@ -1,4 +1,4 @@
-# Chinook CTI — ATT&CK Intelligence Browser
+# Chinook CTI — ATT&CK Browser
 
 A threat-actor intelligence browser built around the **Diamond Model of Intrusion
 Analysis**, sourced live from MITRE ATT&CK® and enriched with MITRE D3FEND™
