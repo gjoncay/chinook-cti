@@ -46,7 +46,7 @@ export function HomePage() {
               Threat landscape
             </h1>
             <p className="mt-1 max-w-[560px] text-[13px]" style={{ color: "var(--text-secondary)" }}>
-              A curated view of the MITRE ATT&CK intrusion-set corpus. See who's most active,
+              A curated view of the MITRE ATT&CK intrusion-set corpus. See who's most documented,
               which techniques are most common, and how it all maps across the kill chain.
             </p>
           </div>
@@ -64,7 +64,7 @@ export function HomePage() {
             <StatCards stats={dash.stats} />
 
             <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-              <Panel title="Most active threat actors" subtitle="By distinct techniques observed">
+              <Panel title="Most documented threat actors" subtitle="By distinct techniques observed">
                 <RankedBars items={dash.actors} accent="var(--accent-primary)" />
               </Panel>
               <Panel title="Most prevalent techniques" subtitle="By number of tracked actors using them">
