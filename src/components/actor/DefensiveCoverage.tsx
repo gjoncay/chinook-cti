@@ -24,20 +24,37 @@ function CoverageRow({
   const [open, setOpen] = useState(false);
   const pct = scale > 0 ? Math.round((item.coverage / scale) * 100) : 0;
 
+  const toggle = () => setOpen((v) => !v);
+
   return (
     <div style={{ borderBottom: open ? "1px solid var(--border-subtle)" : "none" }}>
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={toggle}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            toggle();
+          }
+        }}
         aria-expanded={open}
-        className="-mx-2 flex w-[calc(100%+1rem)] items-center gap-3 rounded px-2 py-1 text-left transition-colors hover:bg-[var(--bg-surface)]"
+        className="-mx-2 flex w-[calc(100%+1rem)] cursor-pointer items-center gap-3 rounded px-2 py-1 text-left transition-colors hover:bg-[var(--bg-surface)]"
         title="Click to show the ATT&CK techniques this addresses"
       >
         <div className="flex w-[44%] min-w-0 items-baseline gap-2">
           {item.countermeasure.d3fendId && (
-            <span className="mono shrink-0 text-[11px]" style={{ color: "var(--text-muted)", width: 60 }}>
+            <a
+              href={item.countermeasure.url}
+              target="_blank"
+              rel="noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="mono shrink-0 text-[11px] transition-colors hover:text-[var(--accent-primary)] hover:underline"
+              style={{ color: "var(--text-muted)", width: 60 }}
+              title={`Open ${item.countermeasure.d3fendId} on MITRE D3FEND`}
+            >
               {item.countermeasure.d3fendId}
-            </span>
+            </a>
           )}
           <span
             className="min-w-0 flex-1 truncate text-[13px]"
@@ -67,7 +84,7 @@ function CoverageRow({
         >
           <path d="M4 2.5L7.5 6L4 9.5" stroke="var(--text-muted)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
-      </button>
+      </div>
 
       {open && (
         <div className="flex flex-wrap gap-1.5 pb-2.5 pt-1">
