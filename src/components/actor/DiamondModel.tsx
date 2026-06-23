@@ -1,5 +1,5 @@
-import { useEffect, useRef, useState } from "react";
-import type { AttackGroupDetail } from "../../data/types";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { AttackGroupDetail, TechniqueUse } from "../../data/types";
 
 interface DiamondModelProps {
   detail: AttackGroupDetail;
@@ -112,6 +112,72 @@ function MetaItem({ label, value }: { label: string; value: string }) {
   );
 }
 
+/**
+ * A targeted-platform chip that reveals, on hover/focus, the exact techniques
+ * this actor uses that target the platform. The popup lives inside the hover
+ * container so moving into it (to scroll or click a technique) keeps it open.
+ */
+function PlatformChip({ name, count, techniques }: { name: string; count: number; techniques: TechniqueUse[] }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <span
+      className="relative inline-flex"
+      onMouseEnter={() => setOpen(true)}
+      onMouseLeave={() => setOpen(false)}
+      onFocus={() => setOpen(true)}
+      onBlur={() => setOpen(false)}
+    >
+      <span
+        tabIndex={0}
+        className="flex cursor-default items-center gap-1.5 rounded px-2 py-0.5 text-[12px] outline-none"
+        style={{ border: "1px solid var(--border-default)", borderRadius: 4, color: "var(--text-secondary)" }}
+        aria-label={`${name}: ${count} ${count === 1 ? "technique" : "techniques"}`}
+      >
+        {name}
+        <span className="mono text-[11px] tabular-nums" style={{ color: "var(--text-muted)" }}>
+          {count}
+        </span>
+      </span>
+
+      {open && techniques.length > 0 && (
+        <span
+          role="tooltip"
+          className="absolute bottom-full left-0 z-30 mb-1.5 flex max-h-[260px] w-[300px] flex-col overflow-y-auto p-2.5 text-left"
+          style={{
+            backgroundColor: "var(--bg-overlay)",
+            border: "1px solid var(--border-default)",
+            borderRadius: 6,
+            boxShadow: "var(--shadow-card)",
+          }}
+        >
+          <span className="data-label mb-2 block">
+            {count} {count === 1 ? "technique targets" : "techniques target"} {name}
+          </span>
+          <span className="flex flex-col gap-1.5">
+            {techniques.map((t) => (
+              <a
+                key={t.techniqueId}
+                href={t.url}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-baseline gap-1.5 transition-colors hover:text-[var(--accent-primary)]"
+                style={{ color: "var(--text-secondary)" }}
+                title={`${t.techniqueId} ${t.techniqueName}`}
+              >
+                <span className="mono shrink-0 text-[11px]" style={{ color: "var(--text-muted)", width: 64 }}>
+                  {t.techniqueId}
+                </span>
+                <span className="min-w-0 flex-1 text-[12px]">{t.techniqueName}</span>
+              </a>
+            ))}
+          </span>
+        </span>
+      )}
+    </span>
+  );
+}
+
 export function DiamondModel({
   detail,
   onFocusCapability,
@@ -119,6 +185,23 @@ export function DiamondModel({
   onFocusSources,
 }: DiamondModelProps) {
   const [showPlatforms, setShowPlatforms] = useState(false);
+
+  // Map each platform to the actor's techniques that target it. The length of
+  // each list equals the platform's count (both derive from techniqueUses).
+  const techniquesByPlatform = useMemo(() => {
+    const map = new Map<string, TechniqueUse[]>();
+    for (const use of detail.techniqueUses) {
+      for (const platform of use.platforms) {
+        const list = map.get(platform);
+        if (list) list.push(use);
+        else map.set(platform, [use]);
+      }
+    }
+    for (const list of map.values()) {
+      list.sort((a, b) => a.techniqueId.localeCompare(b.techniqueId));
+    }
+    return map;
+  }, [detail.techniqueUses]);
 
   // Scale the fixed-size diamond stage down to fit narrow viewports. Desktop
   // (>= W px available) renders at native scale 1, identical to before.
@@ -247,21 +330,16 @@ export function DiamondModel({
         <div className="mt-4" style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: 16 }}>
           <div className="data-label mb-0.5">Targeted platforms · victim systems</div>
           <p className="mb-2 text-[11px]" style={{ color: "var(--text-muted)" }}>
-            Number = how many of this actor's techniques target each platform
+            Number = techniques targeting each platform · hover a platform to list them
           </p>
           <div className="flex flex-wrap gap-1.5">
             {detail.platforms.map((p) => (
-              <span
+              <PlatformChip
                 key={p.name}
-                className="flex items-center gap-1.5 px-2 py-0.5 text-[12px]"
-                style={{ border: "1px solid var(--border-default)", borderRadius: 4, color: "var(--text-secondary)" }}
-                title={`${p.count} ${p.count === 1 ? "technique targets" : "techniques target"} ${p.name}`}
-              >
-                {p.name}
-                <span className="mono text-[11px] tabular-nums" style={{ color: "var(--text-muted)" }}>
-                  {p.count}
-                </span>
-              </span>
+                name={p.name}
+                count={p.count}
+                techniques={techniquesByPlatform.get(p.name) ?? []}
+              />
             ))}
           </div>
         </div>
