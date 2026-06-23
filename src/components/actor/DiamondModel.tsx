@@ -141,36 +141,40 @@ function PlatformChip({ name, count, techniques }: { name: string; count: number
       </span>
 
       {open && techniques.length > 0 && (
-        <span
-          role="tooltip"
-          className="absolute bottom-full left-0 z-30 mb-1.5 flex max-h-[260px] w-[300px] flex-col overflow-y-auto p-2.5 text-left"
-          style={{
-            backgroundColor: "var(--bg-overlay)",
-            border: "1px solid var(--border-default)",
-            borderRadius: 6,
-            boxShadow: "var(--shadow-card)",
-          }}
-        >
-          <span className="data-label mb-2 block">
-            {count} {count === 1 ? "technique targets" : "techniques target"} {name}
-          </span>
-          <span className="flex flex-col gap-1.5">
-            {techniques.map((t) => (
-              <a
-                key={t.techniqueId}
-                href={t.url}
-                target="_blank"
-                rel="noreferrer"
-                className="flex items-baseline gap-1.5 transition-colors hover:text-[var(--accent-primary)]"
-                style={{ color: "var(--text-secondary)" }}
-                title={`${t.techniqueId} ${t.techniqueName}`}
-              >
-                <span className="mono shrink-0 text-[11px]" style={{ color: "var(--text-muted)", width: 64 }}>
-                  {t.techniqueId}
-                </span>
-                <span className="min-w-0 flex-1 text-[12px]">{t.techniqueName}</span>
-              </a>
-            ))}
+        // Transparent padding (pb-1.5) bridges the visual gap to the chip so the
+        // mouse stays within the hover container while crossing to the popup.
+        <span className="absolute bottom-full left-0 z-30 flex flex-col pb-1.5">
+          <span
+            role="tooltip"
+            className="flex max-h-[260px] w-[300px] flex-col overflow-y-auto p-2.5 text-left"
+            style={{
+              backgroundColor: "var(--bg-overlay)",
+              border: "1px solid var(--border-default)",
+              borderRadius: 6,
+              boxShadow: "var(--shadow-card)",
+            }}
+          >
+            <span className="data-label mb-2 block">
+              {count} {count === 1 ? "technique targets" : "techniques target"} {name}
+            </span>
+            <span className="flex flex-col gap-1.5">
+              {techniques.map((t) => (
+                <a
+                  key={t.techniqueId}
+                  href={t.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-baseline gap-1.5 transition-colors hover:text-[var(--accent-primary)]"
+                  style={{ color: "var(--text-secondary)" }}
+                  title={`${t.techniqueId} ${t.techniqueName}`}
+                >
+                  <span className="mono shrink-0 text-[11px]" style={{ color: "var(--text-muted)", width: 64 }}>
+                    {t.techniqueId}
+                  </span>
+                  <span className="min-w-0 flex-1 text-[12px]">{t.techniqueName}</span>
+                </a>
+              ))}
+            </span>
           </span>
         </span>
       )}
