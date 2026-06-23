@@ -245,7 +245,10 @@ export function DiamondModel({
 
       {showPlatforms && platformNames.length > 0 && (
         <div className="mt-4" style={{ borderTop: "1px solid var(--border-subtle)", paddingTop: 16 }}>
-          <div className="data-label mb-2">Targeted platforms · victim systems</div>
+          <div className="data-label mb-0.5">Targeted platforms · victim systems</div>
+          <p className="mb-2 text-[11px]" style={{ color: "var(--text-muted)" }}>
+            Number = how many of this actor's techniques target each platform
+          </p>
           <div className="flex flex-wrap gap-1.5">
             {detail.platforms.map((p) => (
               <span
