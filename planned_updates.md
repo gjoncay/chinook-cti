@@ -1,0 +1,2 @@
+-create a MITRE navigator-like tool that allows a user to plan their defenses or select which defenses they have active to mitigate certain threats
+	-perhaps this is better in the sandbox tool; instead, the browser could be a starting point with an option to link over to the planning tool
