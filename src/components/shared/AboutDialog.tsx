@@ -88,7 +88,7 @@ export function AboutDialog({ open, onClose }: AboutDialogProps) {
         <div className="space-y-5 px-6 py-5">
           <Section title="Independent project">
             <p>
-              Chinook Cyber is an independent, non-commercial project created by Grant Oncay for education
+              Chinook Cyber is an independent, non-commercial project created by <Ext href="https://www.linkedin.com/in/grant-oncay-b340b0243">Grant Oncay</Ext> for education
               and research. It is not affiliated with, endorsed by, or sponsored by The MITRE
               Corporation, and its author derives no revenue from it.
             </p>
@@ -134,7 +134,7 @@ export function AboutDialog({ open, onClose }: AboutDialogProps) {
           </div>
 
           <p className="text-[12px]" style={{ color: "var(--text-muted)", paddingTop: 4 }}>
-            Created by Grant Oncay · independent, non-commercial project.
+            Created by <Ext href="https://www.linkedin.com/in/grant-oncay-b340b0243">Grant Oncay</Ext> · independent, non-commercial project.
           </p>
         </div>
       </div>
