@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, Link } from "react-router-dom";
 import { ActorSidebar } from "./ActorSidebar";
 import logoUrl from "../../assets/chinook-logo.png";
 
@@ -25,13 +25,15 @@ export function AppShell() {
             <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
         </button>
-        <a href="https://chinookcyber.com" className="flex items-center gap-2" aria-label="Chinook Cyber — home">
-          <img src={logoUrl} alt="" className="h-7 w-auto shrink-0" />
-          <span className="text-[16px] font-bold leading-none tracking-[-0.01em]">
+        <div className="flex items-center gap-2">
+          <a href="https://chinookcyber.com" aria-label="Chinook Cyber — home" title="Back to Chinook Cyber">
+            <img src={logoUrl} alt="" className="h-7 w-auto shrink-0" />
+          </a>
+          <Link to="/" className="text-[16px] font-bold leading-none tracking-[-0.01em] hover:opacity-80 transition-opacity" aria-label="ATT&CK Browser Home">
             <span style={{ color: "var(--text-primary)" }}>Chinook</span>
             <span style={{ color: "var(--accent-primary)" }}> Cyber</span>
-          </span>
-        </a>
+          </Link>
+        </div>
       </div>
 
       {/* Persistent sidebar — md and up, exactly as before. */}

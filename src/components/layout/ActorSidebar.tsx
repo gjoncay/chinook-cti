@@ -162,19 +162,19 @@ export function ActorSidebar({ onNavigate }: ActorSidebarProps = {}) {
       aria-label="Threat actors"
     >
       {/* Brand — links home */}
-      <div className="px-3 pb-3.5 pt-4" style={{ borderBottom: "1px solid var(--border-default)" }}>
-        <a href="https://chinookcyber.com" onClick={onNavigate} className="flex items-center gap-2.5" aria-label="Chinook Cyber — home">
-          <img src={logoUrl} alt="" className="h-9 w-auto shrink-0" />
-          <div>
-            <div className="text-[17px] font-bold leading-none tracking-[-0.01em]">
-              <span style={{ color: "var(--text-primary)" }}>Chinook</span>
-              <span style={{ color: "var(--accent-primary)" }}> Cyber</span>
-            </div>
-            <div className="data-label mt-1.5" style={{ color: "var(--accent-secondary)" }}>
-              ATT&CK Browser
-            </div>
-          </div>
+      <div className="px-3 pb-3.5 pt-4 flex items-center gap-2.5" style={{ borderBottom: "1px solid var(--border-default)" }}>
+        <a href="https://chinookcyber.com" className="shrink-0" title="Back to Chinook Cyber" aria-label="Chinook Cyber — home">
+          <img src={logoUrl} alt="Chinook Cyber" className="h-9 w-auto" />
         </a>
+        <Link to="/" onClick={onNavigate} className="flex flex-col hover:opacity-80 transition-opacity" aria-label="ATT&CK Browser Home" title="Browser Overview">
+          <div className="text-[17px] font-bold leading-none tracking-[-0.01em]">
+            <span style={{ color: "var(--text-primary)" }}>Chinook</span>
+            <span style={{ color: "var(--accent-primary)" }}> Cyber</span>
+          </div>
+          <div className="data-label mt-1.5" style={{ color: "var(--accent-secondary)" }}>
+            ATT&CK Browser
+          </div>
+        </Link>
       </div>
 
       {/* Search */}
