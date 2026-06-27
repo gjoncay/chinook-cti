@@ -25,13 +25,13 @@ export function AppShell() {
             <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
           </svg>
         </button>
-        <Link to="/" className="flex items-center gap-2" aria-label="Chinook Cyber — home">
+        <a href="https://chinookcyber.com" className="flex items-center gap-2" aria-label="Chinook Cyber — home">
           <img src={logoUrl} alt="" className="h-7 w-auto shrink-0" />
           <span className="text-[16px] font-bold leading-none tracking-[-0.01em]">
             <span style={{ color: "var(--text-primary)" }}>Chinook</span>
             <span style={{ color: "var(--accent-primary)" }}> Cyber</span>
           </span>
-        </Link>
+        </a>
       </div>
 
       {/* Persistent sidebar — md and up, exactly as before. */}

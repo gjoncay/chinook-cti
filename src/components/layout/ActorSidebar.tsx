@@ -163,7 +163,7 @@ export function ActorSidebar({ onNavigate }: ActorSidebarProps = {}) {
     >
       {/* Brand — links home */}
       <div className="px-3 pb-3.5 pt-4" style={{ borderBottom: "1px solid var(--border-default)" }}>
-        <Link to="/" onClick={onNavigate} className="flex items-center gap-2.5" aria-label="Chinook Cyber — home">
+        <a href="https://chinookcyber.com" onClick={onNavigate} className="flex items-center gap-2.5" aria-label="Chinook Cyber — home">
           <img src={logoUrl} alt="" className="h-9 w-auto shrink-0" />
           <div>
             <div className="text-[17px] font-bold leading-none tracking-[-0.01em]">
@@ -174,7 +174,7 @@ export function ActorSidebar({ onNavigate }: ActorSidebarProps = {}) {
               ATT&CK Browser
             </div>
           </div>
-        </Link>
+        </a>
       </div>
 
       {/* Search */}
